@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
 
   point = "37.757386|-122.490667"
-  box = "37.757386|-122.490667,37.746138|-122.395481"
+  # box = "37.757386|-122.490667,37.746138|-122.395481"
   radius = "100"
   url = f"https://api.iq.inrix.com/v1/incidents?point={point}&radius={radius}&incidentoutputfields=All&incidenttype=Incidents,Construction&locale=en"
 
@@ -19,11 +19,13 @@ def index():
 
   response = requests.request("GET", url, headers=headers, data=payload)
 
-  print(response.text)
-  return response.text
+  # print(response.text)
+  # return response.text
   # return jsonify(response.text)
   # return jsonify({'name': 'alice2',
   #                 'email': 'alice@outlook.com'})
+  # return{"members": ["Member1", "Member2", "Member3"]}
+  return{"message":"tiffany will be happy if you show up pls"}
 
 if __name__ == "main":
-  app.run(debug=True)
+  app.run(debug=True, host="0.0.0.0", port=5001)

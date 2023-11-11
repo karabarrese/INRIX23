@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+//import {GetLocation} from 'react-native-get-location'
 
 export default function App() {
   return (
@@ -18,3 +19,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+/*GetLocation.getCurrentPosition({
+  enableHighAccuracy: true,
+  timeout: 60000,
+})
+.then(location => {
+  console.log(location);
+})
+.catch(error => {
+  const { code, message } = error;
+  console.warn(code, message);
+})*/

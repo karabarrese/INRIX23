@@ -11,11 +11,10 @@ Time spent: **16** hours spent in total
 The following functionality is completed:
 
 - [X] **User can input location**
-- [X] **Displays route from user's location to desired location**
-- [X] **App stores contact information that user types in the app**
-- [X] **Map succesfully displayed by Expo SDK**
-- [X] **Lockmode is enabled once user inputs location**
-- [X] **Notifies peoerson in contact information if user exits the map**
+- [X] **Displays map with route and nearby incidents**
+- [X] **App stores contact information and user's desired location**
+- [X] **Detects if user's speed is over the average speed of street segment**
+- [X] **Notifies person in contact information if user exits the map or user drives over the average speed limit**
 
 ## Video Walkthrough
 

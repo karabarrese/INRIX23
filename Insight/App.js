@@ -7,7 +7,7 @@ export default function App() {
 
   useEffect(() => {
     console.log("useEffect")
-    fetch("http://172.31.181.212:5001/").then(
+    fetch("http://172.31.181.212:5001/incidents").then(
       res => res.json()
     ).then(
       data => {

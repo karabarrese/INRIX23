@@ -30,8 +30,7 @@ Here's a walkthrough of implemented user stories:
 
 <img src='' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-<!-- Replace this with whatever GIF tool you used! -->
-GIF created with ... ScreenToGif  
+And [linked here]((https://youtube.com/shorts/GcmCntbbXZM?si=DmumYk3rbYP_dFA6)) is a video demo of our app!
 
 ## Notes
 - 

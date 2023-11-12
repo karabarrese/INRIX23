@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { add_user_details } from './addDataToDatabase'; // Adjust the path accordingly
+import { add_contacts } from './addDataToDatabase'; // Adjust the path accordingly
+import { getDocID, setDocID } from './DocIdGetterSetter';
 
 class ContactsScreen extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class ContactsScreen extends React.Component {
     let docID = getDocID();
 
     add_contacts(this.state.parentName, this.state.parentNumber, docID);
-    console.log("Function returned a");
+    // console.log("Function returned a");
     // this.props.navigation.navigate("Contacts");
     // this.props.navigation.navigate("Contacts");
     this.props.navigation.navigate("DrivingFact");

@@ -1,55 +1,73 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { add_contacts } from './addDataToDatabase'; // Adjust the path accordingly
+import { getDocID, setDocID } from './DocIdGetterSetter';
 
-export default function ContactsScreen() {
-  const [parentName, setName] = useState('');
-  const [parentNumber, setNumber] = useState('');
+class ContactsScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleSubmit = async () => {
-    console.log('Submitted:', parentName, parentNumber);
-    await add_contacts(parentName, parentNumber); 
-    console.log("Function returned")
+    this.state = {
+      parentName: "",
+      parentNumber: "",
+    };
+  }
+
+  
+  handleSubmit = async () => {
+    // console.log('Submitted:', this.state.parentName, this.state.parentNumber, getDocID());
+
+    let docID = getDocID();
+
+    add_contacts(this.state.parentName, this.state.parentNumber, docID);
+    // console.log("Function returned a");
+    // this.props.navigation.navigate("Contacts");
+    // this.props.navigation.navigate("Contacts");
+    this.props.navigation.navigate("DrivingFact");
+
+    return docId;
   };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.line1}>
-      </View>
-      <View style={styles.heading}>
-        <Image 
-            style={styles.image}
-            source={require('../assets/Contacts(2).png')}
+  
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.line1}>
+        </View>
+        <View style={styles.heading}>
+          <Image 
+              style={styles.image}
+              source={require('./assets/Contacts(2).png')}
+          />
+          <Text
+              style={{fontWeight: 'bold', fontSize: 45, left: '40%', bottom: 50, color: '#243E36'}}>
+              Contacts
+          </Text>
+        </View>
+        <View style={styles.line2}>
+        </View>
+        <TextInput
+          value={this.state.parentName}
+          onChangeText={(text) => this.setState({ parentName: text })}
+          placeholder="Parent Name"
+          style={styles.textbox}
         />
-        <Text
-            style={{fontWeight: 'bold', fontSize: 45, left: '40%', bottom: 50, color: '#243E36'}}>
-            Contacts
-        </Text>
+  
+        <TextInput
+          value={this.state.parentNumber}
+          onChangeText={(text) => this.setState({ parentNumber: text })}
+          placeholder="Parent Number"
+          style={styles.textbox}
+        />
+  
+        <TouchableOpacity onPress={this.handleSubmit} style={styles.button}>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25}}>Submit</Text>
+        </TouchableOpacity>
+  
+        <StatusBar style="auto" />
       </View>
-      <View style={styles.line2}>
-      </View>
-      <TextInput
-        value={parentName}
-        onChangeText={(text) => setName(text)}
-        placeholder="Parent Name"
-        style={styles.textbox}
-      />
-
-      <TextInput
-        value={parentNumber}
-        onChangeText={(text) => setNumber(text)}
-        placeholder="Parent Phone"
-        style={styles.textbox}
-      />
-
-      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25}}>Submit</Text>
-      </TouchableOpacity>
-
-      <StatusBar style="auto" />
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({

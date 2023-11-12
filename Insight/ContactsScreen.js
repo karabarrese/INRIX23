@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { add_user_details } from './addDataToDatabase'; // Adjust the path accordingly
+import { add_contacts } from './addDataToDatabase'; // Adjust the path accordingly
+import { getDocID, setDocID } from './DocIdGetterSetter'; 
 
 class ContactsScreen extends React.Component {
   constructor(props) {

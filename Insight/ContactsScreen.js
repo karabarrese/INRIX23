@@ -22,7 +22,7 @@ class ContactsScreen extends React.Component {
     let docID = getDocID();
 
     add_contacts(this.state.parentName, this.state.parentNumber, docID);
-    console.log("Function returned a");
+    // console.log("Function returned a");
     // this.props.navigation.navigate("Contacts");
     // this.props.navigation.navigate("Contacts");
     this.props.navigation.navigate("DrivingFact");

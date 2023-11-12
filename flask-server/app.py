@@ -1,29 +1,112 @@
 import json
 import requests
 from flask import Flask, jsonify, request
+
+import vonage
+import os
+from dotenv import load_dotenv
+
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/incidents', methods=['GET'])
 def index():
+  # args = request.args
+  # point = args.get("point", default="37.757386|-122.490667", type=str)
 
   point = "37.757386|-122.490667"
-  box = "37.757386|-122.490667,37.746138|-122.395481"
   radius = "100"
   url = f"https://api.iq.inrix.com/v1/incidents?point={point}&radius={radius}&incidentoutputfields=All&incidenttype=Incidents,Construction&locale=en"
 
   payload = {}
   headers = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6IjcxMDU4ZjQ2YjhhZDNiZGJhM2U0NDAxYTU4NjY5MTFjIiwiY29udGVudCI6IjMxOGY1MGMxYTAzNjg5Yjc3ZGRiYWNmZTcyYTBlYzdlMGZkZTc3M2FmMjRlNjMxMGFiM2MwNjQxZGM0MjY3N2RjMDkzZjY1MTFhMTNjMWRkOTdlNTY1ZjRmZGNmNTI0MzY3Zjc1YmUzYmY3OWUxOWNlM2U1NjZkMGZhNWFmYWM0MDliYzMyNTEwNzZjNmMwNzQyNWYzODI0YmM5ZDI2Y2E0ZjNiZDhhNDRmZmZhMWNhMzg0ZjkyZGQ1YTk1YTMwZTY1ZTQwZjQ2YmNhOGVmMzE5NjdiOTkzNjJiYjgwYzhiOGY2OTJhMjI1YWI0Nzc2NTQyMWYyZGEyZGRiNWJkNzAzOGI3ZmM0MTdhZTRiYjIxZjRjMTk2NmExNzlkODU4ODdiZjY3NjlkZjEwN2NmZTRjYWY0ZjVlOWE4ODg1MzcxM2I4OWU1ZmJmYzhiZjUwNTY3YzBjOWEzNDFiOGU1MmRiYTM0NDk5ODFlODA3MjMwZjNlMTFjYmFmZTZjZDM0NjQwOWY5Nzg2NmQwOGM4OTdkYjI2YzAxZTExNzAwNWMwNTkxMmYxNDM3NjEwOTJiMjNlMGIwNzljMDRmYzI0MGViMmJhYWY3ZDQyYmI1NmEwNTU3MWY4ZmZmNWQ5MGQ1YzRhMjVmOTY3NGU4NmM0ODQ4ZDRlMTFjYmU1OWUwNmFjZTcwNzU2YjcxZjM4YTUzNDg1N2Q5MTdhN2MxODBjMjUwYTZmNDFjZGJmY2ZhMDM5MjZjMjk1NjZhMTA5ZWNkZTMxZDVlYTg3NTIyNTNlZWU0MjVmMTRjZjYyNDU4NWQzMGEwODI4ZjAyNTFhMTFjMzI4MTgxZDJjYjE2ZjQxNDY4MDBmZWI1ODkxZDMzNGU2NTk4ZmFlIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiI3MTA1OGY0NmI4YWQzYmRiYTNlNDQwMWE1ODY2OTExYyIsImNvbnRlbnQiOiIyMWM0NDhkZjkxM2VhNGVmMDNmYzgwYzM0NWI5ODgwODMxZjM1ZjI4ZWE2YzA0NjNmMTRlMjAzOWYwNmM2ZDQ3ZDBiOWVjNWI2NjFlZDZlNzlkZTExOWNhIn0sImp0aSI6IjQ4ZTczYmM3LTRjOTctNDBlNS1hMmY3LTc3MTg5YzAxYTJkNCIsImlhdCI6MTY5OTczMTIwMCwiZXhwIjoxNjk5NzM0ODAwfQ.B2L4GRkT4yoc_9QZ4-Jhfm99De_Oi_CY2T2VjlE_OBA","expiry":"2023-11-11T20:33:20.244Z',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImVkZWJlYTkyZDljM2FlMzA3YTczMjRmOWU4NDU1MDMzIiwiY29udGVudCI6IjQ3ODg4Y2Q4MTgwOTlmOGJhNTM1ZDhlMmQxZjc2MzFhZDQ3NGZhN2M0OWNlZmEzZjFhYzI0MzAzZTUwNzlkNTU3ZTJmMTVlYzA5MDcxNWVhNmFlMmVhMWE5Yzg2M2JmYjU5MTBkMzBhNzgzNzQ5Y2ZjMzEzNTBmY2YwNzY4ZjA3YTk0OGFjZjFiNjRjNzAwYmYyOGY2MDU4YTFhNWJiY2E5ZTZjY2RlMzY2ZmQxY2Q3N2U0MzYyOGI1Yjg1NmMyYTVkNGYzNmY1ZmZhNjA1Zjk0NWU0MDRkYzI2ZjNmOTc5ZGI4ZGQzODUyOTYwZWNkOGIyYTAzNjM0MzQ2NWZmZDE3NjZiYzk3ZDhlZDgxMGFiMDMzOTk5MjAzYTc3OGM4Mjc2NmY5NTRlMDFhY2YxNmU5ZGNhZGZmZWUxYzZlNjFmNGFmMmNiYmQ1OTgwZTM5NGIyNTBkYjU1YmZjYTIxNDY0OTM1NWQ2NDY5MTI1MmM2ZWFlYzMzY2ZjODE1ZjA3ZTUyNzIyOGQyMDY3MWNlMzlkNWY4YzE5M2Q3MDQzM2Y3ZmVhZGRmZTIyYTI0NjMyNjIzYzM4MzMzNTQxYjk1ZTNiZmQwYTk1OWM5OWM1Mjg5NjAyYmY3NGUzZWMzYzE2YzU5M2EyODc2NmJkMDhmMzI0NDY3ZDI4MTkxOTQ4ZjlhNjIyMDI1MWNlZjg4MTFlNGQwYzEzZDdlYzZlZmJlYzc0Y2MxZDY5NzczODBhNGMyNWRjZTE4YmI0ZmM2NGExMzcxMGQxYzZjYzNhNzhjMmE2NGZmZGEzY2FjNzVmMjhjMmE3Y2NhNDBmN2VkOGYyNjRmYWJiZjA2YjUxMTFlNWMwYjY3YTlmMGRlMjE2MGUxZDRjMTdhIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJlZGViZWE5MmQ5YzNhZTMwN2E3MzI0ZjllODQ1NTAzMyIsImNvbnRlbnQiOiIwZmIzODJjNjA5MTg5N2I0OWYxYWUwZjFmZWNiNmYxOGRmNTBjMDRkNWFlZjg1NWQyOWU0NTg3MDk4NWVhMjY5N2QyNjBhODI3MjM1MGRlNjMwZTllYjI0In0sImp0aSI6IjU2MjI0MzYxLTgyMWEtNDU5Yy04MzZiLTgyY2EwOWFkZmE4NSIsImlhdCI6MTY5OTgwMTMyMCwiZXhwIjoxNjk5ODA0OTIwfQ.JxubXRojuimiANV1QR4B3_qyHT9yxYcYWHGP5M0xYB',
     'Cookie': 'lang=en-US'
   }
 
+  # get all incidents from inrix api
   response = requests.request("GET", url, headers=headers, data=payload)
+  incidents = json.loads(response.text)["result"]["incidents"]
 
-  print(response.text)
-  return response.text
-  # return jsonify(response.text)
-  # return jsonify({'name': 'alice2',
-  #                 'email': 'alice@outlook.com'})
+  my_dict = {"incidents": []}
+  my_json = json.dumps(my_dict)
+  incidents_json = json.loads(my_json)
+
+  # filter out just coordinates and description data in array
+  for i in incidents:
+    newJson = [i["geometry"]["coordinates"],i["descriptions"][0]["desc"]]
+    incidents_json["incidents"].append(newJson)
+  return incidents_json
 
 if __name__ == "main":
-  app.run(debug=True)
+  app.run(debug=True, host="0.0.0.0", port=5001)
+
+@app.route('/sendMessage', methods=['POST'])
+def sendMesage():
+  load_dotenv()
+  client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
+  sms = vonage.Sms(client)
+
+  responseData = sms.send_message(
+      {
+          "from": "13049150279",
+          "to": os.getenv('PHONE_NUMBER'),
+          "text": "You are using your phone while driving",
+      }
+  )
+
+  if responseData["messages"][0]["status"] == "0":
+      print("Message sent successfully.")
+  else:
+      print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  return
+
+@app.route('/sendSpeedMessage', methods=['POST'])
+def sendSpeedMesage():
+  load_dotenv()
+  client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
+  sms = vonage.Sms(client)
+
+  responseData = sms.send_message(
+      {
+          "from": "13049150279",
+          "to": os.getenv('PHONE_NUMBER'),
+          "text": "You are driving too fast",
+      }
+  )
+
+  if responseData["messages"][0]["status"] == "0":
+      print("Message sent successfully.")
+  else:
+      print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  return
+
+
+@app.route('/segmentSpeed', methods=['GET'])
+def speedIndex():
+  point = "37.757386%7C-122.490667"
+  radius = "0.1"
+  url = f"https://api.iq.inrix.com/v1/segments/speed?point={point}&radius={radius}"
+  # url = "https://api.iq.inrix.com/v1/segments/speed?point=37.757386%7C-122.490667&radius=0.1"
+  payload = {}
+  headers = {
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImVkZWJlYTkyZDljM2FlMzA3YTczMjRmOWU4NDU1MDMzIiwiY29udGVudCI6IjQ3ODg4Y2Q4MTgwOTlmOGJhNTM1ZDhlMmQxZjc2MzFhZDQ3NGZhN2M0OWNlZmEzZjFhYzI0MzAzZTUwNzlkNTU3ZTJmMTVlYzA5MDcxNWVhNmFlMmVhMWE5Yzg2M2JmYjU5MTBkMzBhNzgzNzQ5Y2ZjMzEzNTBmY2YwNzY4ZjA3YTk0OGFjZjFiNjRjNzAwYmYyOGY2MDU4YTFhNWJiY2E5ZTZjY2RlMzY2ZmQxY2Q3N2U0MzYyOGI1Yjg1NmMyYTVkNGYzNmY1ZmZhNjA1Zjk0NWU0MDRkYzI2ZjNmOTc5ZGI4ZGQzODUyOTYwZWNkOGIyYTAzNjM0MzQ2NWZmZDE3NjZiYzk3ZDhlZDgxMGFiMDMzOTk5MjAzYTc3OGM4Mjc2NmY5NTRlMDFhY2YxNmU5ZGNhZGZmZWUxYzZlNjFmNGFmMmNiYmQ1OTgwZTM5NGIyNTBkYjU1YmZjYTIxNDY0OTM1NWQ2NDY5MTI1MmM2ZWFlYzMzY2ZjODE1ZjA3ZTUyNzIyOGQyMDY3MWNlMzlkNWY4YzE5M2Q3MDQzM2Y3ZmVhZGRmZTIyYTI0NjMyNjIzYzM4MzMzNTQxYjk1ZTNiZmQwYTk1OWM5OWM1Mjg5NjAyYmY3NGUzZWMzYzE2YzU5M2EyODc2NmJkMDhmMzI0NDY3ZDI4MTkxOTQ4ZjlhNjIyMDI1MWNlZjg4MTFlNGQwYzEzZDdlYzZlZmJlYzc0Y2MxZDY5NzczODBhNGMyNWRjZTE4YmI0ZmM2NGExMzcxMGQxYzZjYzNhNzhjMmE2NGZmZGEzY2FjNzVmMjhjMmE3Y2NhNDBmN2VkOGYyNjRmYWJiZjA2YjUxMTFlNWMwYjY3YTlmMGRlMjE2MGUxZDRjMTdhIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJlZGViZWE5MmQ5YzNhZTMwN2E3MzI0ZjllODQ1NTAzMyIsImNvbnRlbnQiOiIwZmIzODJjNjA5MTg5N2I0OWYxYWUwZjFmZWNiNmYxOGRmNTBjMDRkNWFlZjg1NWQyOWU0NTg3MDk4NWVhMjY5N2QyNjBhODI3MjM1MGRlNjMwZTllYjI0In0sImp0aSI6IjU2MjI0MzYxLTgyMWEtNDU5Yy04MzZiLTgyY2EwOWFkZmE4NSIsImlhdCI6MTY5OTgwMTMyMCwiZXhwIjoxNjk5ODA0OTIwfQ.JxubXRojuimiANV1QR4B3_qyHT9yxYcYWHGP5M0xYB',
+    'Cookie': 'lang=en-US'
+  }
+
+  # get all incidents from inrix api
+  response = requests.request("GET", url, headers=headers, data=payload)
+  currentSpeed = json.loads(response.text)["result"]["segmentspeeds"][0]["segments"][0]["speed"]
+  return {"currentSegmentSpeed": currentSpeed}
+
+@app.route('/getRoute', methods=['GET'])
+def getRoute():
+  url = 'https://api.iq.inrix.com/findRoute?format=json&wp_1=37.770581%2C-122.442550&wp_2=37.765297%2C-122.442527&routeOutputFields=P'
+  payload = {}
+  headers = {
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImVkZWJlYTkyZDljM2FlMzA3YTczMjRmOWU4NDU1MDMzIiwiY29udGVudCI6IjQ3ODg4Y2Q4MTgwOTlmOGJhNTM1ZDhlMmQxZjc2MzFhZDQ3NGZhN2M0OWNlZmEzZjFhYzI0MzAzZTUwNzlkNTU3ZTJmMTVlYzA5MDcxNWVhNmFlMmVhMWE5Yzg2M2JmYjU5MTBkMzBhNzgzNzQ5Y2ZjMzEzNTBmY2YwNzY4ZjA3YTk0OGFjZjFiNjRjNzAwYmYyOGY2MDU4YTFhNWJiY2E5ZTZjY2RlMzY2ZmQxY2Q3N2U0MzYyOGI1Yjg1NmMyYTVkNGYzNmY1ZmZhNjA1Zjk0NWU0MDRkYzI2ZjNmOTc5ZGI4ZGQzODUyOTYwZWNkOGIyYTAzNjM0MzQ2NWZmZDE3NjZiYzk3ZDhlZDgxMGFiMDMzOTk5MjAzYTc3OGM4Mjc2NmY5NTRlMDFhY2YxNmU5ZGNhZGZmZWUxYzZlNjFmNGFmMmNiYmQ1OTgwZTM5NGIyNTBkYjU1YmZjYTIxNDY0OTM1NWQ2NDY5MTI1MmM2ZWFlYzMzY2ZjODE1ZjA3ZTUyNzIyOGQyMDY3MWNlMzlkNWY4YzE5M2Q3MDQzM2Y3ZmVhZGRmZTIyYTI0NjMyNjIzYzM4MzMzNTQxYjk1ZTNiZmQwYTk1OWM5OWM1Mjg5NjAyYmY3NGUzZWMzYzE2YzU5M2EyODc2NmJkMDhmMzI0NDY3ZDI4MTkxOTQ4ZjlhNjIyMDI1MWNlZjg4MTFlNGQwYzEzZDdlYzZlZmJlYzc0Y2MxZDY5NzczODBhNGMyNWRjZTE4YmI0ZmM2NGExMzcxMGQxYzZjYzNhNzhjMmE2NGZmZGEzY2FjNzVmMjhjMmE3Y2NhNDBmN2VkOGYyNjRmYWJiZjA2YjUxMTFlNWMwYjY3YTlmMGRlMjE2MGUxZDRjMTdhIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJlZGViZWE5MmQ5YzNhZTMwN2E3MzI0ZjllODQ1NTAzMyIsImNvbnRlbnQiOiIwZmIzODJjNjA5MTg5N2I0OWYxYWUwZjFmZWNiNmYxOGRmNTBjMDRkNWFlZjg1NWQyOWU0NTg3MDk4NWVhMjY5N2QyNjBhODI3MjM1MGRlNjMwZTllYjI0In0sImp0aSI6IjU2MjI0MzYxLTgyMWEtNDU5Yy04MzZiLTgyY2EwOWFkZmE4NSIsImlhdCI6MTY5OTgwMTMyMCwiZXhwIjoxNjk5ODA0OTIwfQ.JxubXRojuimiANV1QR4B3_qyHT9yxYcYWHGP5M0xYB',
+    'Cookie': 'lang=en-US'
+  }
+  response = requests.request("GET", url, headers=headers, data=payload)
+  waypoints = json.loads(response.text)["result"]["trip"]["routes"]
+  return waypoints
+

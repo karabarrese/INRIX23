@@ -3,6 +3,7 @@ import docId from './SignupScreen';
 import ContactsScreen from './ContactsScreen';
 import HomeScreen from './HomeScreen';
 import DrivingFact from './DrivingFact';
+import LocationScreen from './LocationScreen'
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,6 +23,7 @@ const Stack = createNativeStackNavigator();
 
 
 class App extends Component {
+  
   render() {
     return (
       <NavigationContainer>
@@ -41,6 +43,10 @@ class App extends Component {
           <Stack.Screen
             name="DrivingFact"
             component={DrivingFact} 
+          />
+          <Stack.Screen
+            name="LocationScreen"
+            component={LocationScreen} 
           />
         </Stack.Navigator>
       </NavigationContainer>

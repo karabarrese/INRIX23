@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, AppState } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react'
 
 export default function App() {
+  // Get incident data from flask backend
   const [data, setData] = useState([{}])
 
   useEffect(() => {
@@ -16,10 +17,29 @@ export default function App() {
         // console.log(data.incidents)
       }
     )
-
-    // console.log(res)
   }, [])
 
+  // Detect app state to see if user leaves the app
+  const appState = useRef(AppState.currentState)
+  const [appStateVisible, setAppStateVisible] = useState(appState.current) 
+  
+  useEffect(() =>{
+    AppState.addEventListener("change", _handleAppStateChange)
+    return () => {
+      AppState.removeEventListern("change", _handleAppStateChange)
+    }
+  }, [])
+  
+  const _handleAppStateChange = (nextAppState) => {
+    if(appState.current.match(/active/) && nextAppState === "inactive" ){
+      console.log("User clicked off app")
+    }
+    appState.current = nextAppState
+    setAppStateVisible(appState.current)
+    // console.log("AppState: ", appState.current)
+  }
+
+  // Return/display incident data
   return (
     <View style={styles.container}>
       <Text>Test</Text>

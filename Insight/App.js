@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Callout, Marker } from 'react-native-maps';
-import { StyleSheet, SafeAreaView, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, AppState } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Accelerometer } from 'expo-sensors';

@@ -14,11 +14,13 @@ class ContactsScreen extends React.Component {
     };
   }
 
+  
   handleSubmit = async () => {
-    console.log('Submitted:', this.state.parentName, this.state.parentNumber);
+    // console.log('Submitted:', this.state.parentName, this.state.parentNumber, getDocID());
 
-    let docId;
-    docId = add_user_details(this.state.parentName, this.state.parentNumber);
+    let docID = getDocID();
+
+    add_contacts(this.state.parentName, this.state.parentNumber, docID);
     console.log("Function returned a");
     // this.props.navigation.navigate("Contacts");
     // this.props.navigation.navigate("Contacts");

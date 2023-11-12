@@ -12,8 +12,8 @@ export default function App() {
     ).then(
       data => {
         setData(data)
-        console.log(data)
-        console.log(data.message)
+        // console.log(data)
+        // console.log(data.incidents)
       }
     )
 
@@ -23,10 +23,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Test</Text>
-      {(typeof data.message === 'undefined') ? (
+      {(typeof data.incidents === 'undefined') ? (
         <Text>Loading...</Text>
       ) : (
-        <Text>{data.message}</Text>
+        <View>
+          <Text>{data.incidents[0][0]}</Text>
+          <Text>{data.incidents[0][1]}</Text>
+        </View>
         // data.message.map((message, i) => (
         //   <Text key={i}>{message}</Text>
         // ))

@@ -17,6 +17,7 @@ def index():
     'Cookie': 'lang=en-US'
   }
 
+  # get all incidents from inrix api
   response = requests.request("GET", url, headers=headers, data=payload)
   incidents = json.loads(response.text)["result"]["incidents"]
 
@@ -24,9 +25,11 @@ def index():
   my_json = json.dumps(my_dict)
   incidents_json = json.loads(my_json)
 
+  # filter out just coordinates and description data in array
   for i in incidents:
     # data_array.append([incidents[0]["geometry"]["coordinates"],i["descriptions"][0]["desc"]])
-    newJson = {"location": i["geometry"]["coordinates"],"description": i["descriptions"][0]["desc"]}
+    newJson = [i["geometry"]["coordinates"],i["descriptions"][0]["desc"]]
+    # newJson = {"location": i["geometry"]["coordinates"],"description": i["descriptions"][0]["desc"]}
     incidents_json["incidents"].append(newJson)
   return incidents_json
 

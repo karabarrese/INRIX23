@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, AppState } from 'react-native';
+import { StyleSheet, Text, View, AppState, Platform } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react'
+import { Accelerometer } from 'expo-sensors';
+import * as Location from 'expo-location';
 
 export default function App() {
   // Get incident data from flask backend
@@ -88,6 +90,67 @@ export default function App() {
     //   });
     // }
 
+  // get user speed
+  // const [location, setLocation] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(null);
+
+  // useEffect(() => {
+  //   (async () => {
+      
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
+
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
+
+  // let text = 'Waiting..';
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location["coords"]["speed"]);
+  // }
+  // console.log(text)
+
+  // useEffect(() => {
+  prevAcceleration=0
+  curAcceleration=0
+    const [{ x, y, z }, setData2] = useState({
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    const [subscription, setSubscription] = useState(null);
+  
+    Accelerometer.setUpdateInterval(1000);
+  
+    const _subscribe = () => {
+      setSubscription(Accelerometer.addListener(setData2));
+    };
+  
+    const _unsubscribe = () => {
+      subscription && subscription.remove();
+      setSubscription(null);
+    };
+  
+    useEffect(() => {
+      _subscribe();
+      return () => _unsubscribe();
+    }, []);
+    // console.log("x", x)
+    // console.log("y", y)
+    console.log("z", z)
+    prevAcceleration = curAcceleration;
+    curAcceleration = z;
+    velocity = (curAcceleration - prevAcceleration)*1
+    if(velocity>0.75){
+      console.log("moving too fast in z")
+    }  
+  // }, []);
 
   // Return/display incident data
   return (

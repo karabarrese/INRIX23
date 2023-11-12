@@ -20,7 +20,7 @@ def index():
 
   payload = {}
   headers = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImJiOWE1MjFkY2YzZjE4YzRmOTAwZGEzYjNiMTZmMjc2IiwiY29udGVudCI6IjhhMzViZTFjZmExYTExNjE1ODkxNjU2MjhmZTRjZmM3NWI1NDc0MjMwYjRmNWQ5YTFkNmI4NDkxMDFmNDE1ZWUwYjYwMjE0ZTQ5MjU2MjhlNjk4MTY1OTJhYWQyNDFlOTgzZjMzYmMyNmFkM2E5MTY0YWU2NDZhYmM4YzU3MmU1MzQxZmNiODQ2NmNkZDdiODZjOTBmMTIwZTllNzg4YjNlZDkyNzZhNGUzYmMxMzU1YmRkMjEyNDBhMWU4OWQ5NGRhYmVjNjU4MmNmNmU2MTE0ZWQ4MzI4MGExNjhlMDYzMjUyZDAwZmY1YTM1NjhiNDY0ZGMxZjgzMzA4NGY1MTFkNTA0ZTBkYTdmNmE0MjBjZTE2MzNmNWU5YWQ4MjIyMjQ4MWQzNDY5YzM2Y2Y5MTRkMThiZTNjYTc4ZDYzMzA1ZjFkZDNiMjgxNDI0MjdkZWQ1M2Q2NWI2MjJhNmRiYWFlZTIxZGM1MzkyNTQyMjkxZmZjYjdjMWE1ZTcyZmVmOTIyN2Y1YzdmOTE2MjQ3NDA1ZDM5ODk1MmU2ZWYzNWMyNGMyYTJhMDJhYTcyYWMyYWQzNzZmOWZiYzQxMzZkZGJiNjQwNzk2MDBlNzA2ZTVkODdkNmNmMmMyMmMwNDNhMzRjMGZlOWZmOThmNDRkZDkwMjgwOGQ4OTEwZDI2NWNlODAxOGNjODgwM2I1ZGNkNDYwZTkwODVlN2Q1ZDNkNjJmMWM5NTgwZjU1ZWIwNTgyNmU1ZTM0NzgyODhkNzQzZWQyMjY0MDgxNTY3MzIxZWI3MzdkOGVkNjE5MzEzYzIzYzdmNDM4NDAxNDI3ZDY5M2ZmMGZhZDM4ODQ3YzVmNTFlMjcwZGRmYzQ1MTVhNjY2MTRlYjRkIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJiYjlhNTIxZGNmM2YxOGM0ZjkwMGRhM2IzYjE2ZjI3NiIsImNvbnRlbnQiOiI5YTYxOGMyNmQxM2UzOTZiNDFiMjFlNDU5MWM3YjVjNzdhNzI1MTNlNzAwYjZhOWIxMjZjOTdjZTEyZGEyN2M1MGU0NDQxNGYyOTEzNWE4OTUzZGI0ZWFjIn0sImp0aSI6ImZhOGFjYmQ1LTA3OTYtNDAyZC1iZWUxLTMzYTA2OWM1YzA5MiIsImlhdCI6MTY5OTc2NjUwMCwiZXhwIjoxNjk5NzcwMTAwfQ.Fx_sniZkGPTgIHICnnugqAfVWLzE3QitdHnsgzTBAWQ',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6IjgxNGRkMzQ3M2ZkZGZkMjkzODE4NmMyMzZlOWEzY2Q1NWY5NTQzYjU3YmQ0ODRjNDk0YTAwYjBhNGEwM2RkZDI3MDVhMmI1YTc5ODkyMGE1ZDk0ZGFlYTM3MzQ5Y2E2ZDkyNzAzMzYwMGY2OTk5YTNmZmExOGVhYmQwYmY2ZDE2ODc1OWU4ODRjMzE4NmQ2MWY4ODA5ZDIyZTRmNTMyZGFiNTE5MTFlMDhiODQ1YjJhZGIyMzRhOWRlNjIzZmVmYzU4YTRjYWU1MGVmODUwYWFhYmQyNTg3M2JhYjRhZjkxYWZiNGY1NzgwYzU3MTQ1MDQ4ZmYyNTM2NDNiZmMxMzM2MzcyOWRiMTlhYzkwZTc2NWNjNzc3OWJkMDJkYzdhNzViMjFkNmE2NTk0N2VmMzBjNTFjNDk5MmE2MzI3ZjY1MTcyODk3NWJhMDlmZjcwODg2MThhMDc2NGRiNTkzM2RmMTAyYTczOThmNDIwMDk4NWI5NTI5NjQ5ODg3YjdiZGI2ZDNjNzMxMjU2OTI1NjcxNThiNTU3MzU5Yzk1OGQ0OTA1ZDQ3M2E1YjFiNzM4NGFhMGVhMGZjNGJkNmVlNWRhMDIzZmMwNWVkM2Q4Y2RiMDkyYmQzMTE5MDZhODEyOTM5N2U3YmYzNzMwMmJmMjBlOTgyZjRjNzM0MjZiMThlNDhkODAyZjdjMTA4ODM3OTMwNDE5ZTdkZTU5OGMyNjMxYzA2YjRhN2Q3Njk0ZGJhMDM0ZTk0ZTllODNmZGY4Mjg0NjcxNGQ3MTVjOWE2NjMxNjlkN2NkYzA0ZWU3YjU3NTY0M2U0Yzc0YjAxZjQ3MjMyODRiOTdjMTA2YzFiNmI3YTdjNmVhZTA2NzcxNTVlZTUifSwic2VjdXJpdHlUb2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6Ijk1NDRkZDc4MjdlZGE2MTMyZTAxNGIyMjQyODcxMGE4N2I5NzdkZjE1NzhiYmZiMjg1Yjc3MzdkNjAxY2Q1ZjM2MzYxMjIwODNiYTMzNWJhZDIxNmQ2OWQifSwianRpIjoiMzFhYTg3ZjEtMWY1Zi00ODIwLWJhZDgtMzRmNzhlMjdiOGJjIiwiaWF0IjoxNjk5Nzc0MjU3LCJleHAiOjE2OTk3Nzc4NTd9.Q1PX5x7sWJlJbzFVpjHcIySTvxoX0uh7IGtlgI18E94',
     'Cookie': 'lang=en-US'
   }
 
@@ -36,6 +36,7 @@ def index():
   for i in incidents:
     # data_array.append([incidents[0]["geometry"]["coordinates"],i["descriptions"][0]["desc"]])
     newJson = [i["geometry"]["coordinates"],i["descriptions"][0]["desc"]]
+    # newJson = [i["geometry"]["coordinates"],i["descriptions"][0]["desc"],i["schedule"]["occurrenceStartTime"], i["schedule"]["occurrenceEndTime"]]
     # newJson = {"location": i["geometry"]["coordinates"],"description": i["descriptions"][0]["desc"]}
     incidents_json["incidents"].append(newJson)
   return incidents_json
@@ -43,10 +44,10 @@ def index():
 if __name__ == "main":
   app.run(debug=True, host="0.0.0.0", port=5001)
 
-@app.route('/add_todo', methods=['GET'])
-def add_todo():
-  print("todo function running")
-  return {"test": "yay!"}
+# @app.route('/add_todo', methods=['GET'])
+# def add_todo():
+#   print("todo function running")
+#   return {"test": "yay!"}
 
 @app.route('/sendMessage', methods=['POST'])
 def sendMesage():
@@ -67,3 +68,21 @@ def sendMesage():
     else:
         print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
     return
+
+
+@app.route('/segmentSpeed', methods=['GET'])
+def speedIndex():
+  point = "37.757386%7C-122.490667"
+  radius = "0.1"
+  # url = f"https://api.iq.inrix.com/v1/segments/speed?point={point}&radius={radius}"
+  url = "https://api.iq.inrix.com/v1/segments/speed?point=37.757386%7C-122.490667&radius=0.1"
+  payload = {}
+  headers = {
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6IjgxNGRkMzQ3M2ZkZGZkMjkzODE4NmMyMzZlOWEzY2Q1NWY5NTQzYjU3YmQ0ODRjNDk0YTAwYjBhNGEwM2RkZDI3MDVhMmI1YTc5ODkyMGE1ZDk0ZGFlYTM3MzQ5Y2E2ZDkyNzAzMzYwMGY2OTk5YTNmZmExOGVhYmQwYmY2ZDE2ODc1OWU4ODRjMzE4NmQ2MWY4ODA5ZDIyZTRmNTMyZGFiNTE5MTFlMDhiODQ1YjJhZGIyMzRhOWRlNjIzZmVmYzU4YTRjYWU1MGVmODUwYWFhYmQyNTg3M2JhYjRhZjkxYWZiNGY1NzgwYzU3MTQ1MDQ4ZmYyNTM2NDNiZmMxMzM2MzcyOWRiMTlhYzkwZTc2NWNjNzc3OWJkMDJkYzdhNzViMjFkNmE2NTk0N2VmMzBjNTFjNDk5MmE2MzI3ZjY1MTcyODk3NWJhMDlmZjcwODg2MThhMDc2NGRiNTkzM2RmMTAyYTczOThmNDIwMDk4NWI5NTI5NjQ5ODg3YjdiZGI2ZDNjNzMxMjU2OTI1NjcxNThiNTU3MzU5Yzk1OGQ0OTA1ZDQ3M2E1YjFiNzM4NGFhMGVhMGZjNGJkNmVlNWRhMDIzZmMwNWVkM2Q4Y2RiMDkyYmQzMTE5MDZhODEyOTM5N2U3YmYzNzMwMmJmMjBlOTgyZjRjNzM0MjZiMThlNDhkODAyZjdjMTA4ODM3OTMwNDE5ZTdkZTU5OGMyNjMxYzA2YjRhN2Q3Njk0ZGJhMDM0ZTk0ZTllODNmZGY4Mjg0NjcxNGQ3MTVjOWE2NjMxNjlkN2NkYzA0ZWU3YjU3NTY0M2U0Yzc0YjAxZjQ3MjMyODRiOTdjMTA2YzFiNmI3YTdjNmVhZTA2NzcxNTVlZTUifSwic2VjdXJpdHlUb2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6Ijk1NDRkZDc4MjdlZGE2MTMyZTAxNGIyMjQyODcxMGE4N2I5NzdkZjE1NzhiYmZiMjg1Yjc3MzdkNjAxY2Q1ZjM2MzYxMjIwODNiYTMzNWJhZDIxNmQ2OWQifSwianRpIjoiMzFhYTg3ZjEtMWY1Zi00ODIwLWJhZDgtMzRmNzhlMjdiOGJjIiwiaWF0IjoxNjk5Nzc0MjU3LCJleHAiOjE2OTk3Nzc4NTd9.Q1PX5x7sWJlJbzFVpjHcIySTvxoX0uh7IGtlgI18E94',
+    'Cookie': 'lang=en-US'
+  }
+
+  # get all incidents from inrix api
+  response = requests.request("GET", url, headers=headers, data=payload)
+  currentSpeed = json.loads(response.text)["result"]["segmentspeeds"][0]["segments"][0]["speed"]
+  return {"currentSegmentSpeed": currentSpeed}

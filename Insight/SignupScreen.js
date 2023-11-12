@@ -34,8 +34,9 @@ class SignupScreen extends React.Component {
 
   render() {
     return (
+      <View style={styles.background}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Signup Screen</Text>
+        <Text>Sign In:</Text>
 
         <TextInput
           value={this.state.username}
@@ -60,11 +61,16 @@ class SignupScreen extends React.Component {
 
         <StatusBar backgroundColor="" />
       </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  background:{
+    flex: 1,
+    backgroundColor: '#E0EEC6', // Set your desired background color here
+},
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -78,8 +84,9 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderColor: '#ccc',
+    fillColor: '#E0EEC6',
     borderRadius: 4,
-    fontSize: 14,
+    fontSize: 25,
   },
 
   button: {

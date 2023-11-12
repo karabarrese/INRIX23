@@ -2,10 +2,16 @@ import json
 import requests
 from flask import Flask, jsonify, request
 
+import vonage
+import os
+from dotenv import load_dotenv
+
 app = Flask(__name__)
 
-@app.route('/incidents')
+@app.route('/incidents', methods=['GET'])
 def index():
+  # args = request.args
+  # point = args.get("point", default="37.757386|-122.490667", type=str)
 
   point = "37.757386|-122.490667"
   # box = "37.757386|-122.490667,37.746138|-122.395481"
@@ -14,7 +20,7 @@ def index():
 
   payload = {}
   headers = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6IjEwYTY0ODNjYWI1ZGFhNjg4ZDFiOTRmOTRiYWQxNjc2IiwiY29udGVudCI6IjBhMmVlMjgyOWJkN2Y1N2I1M2FjNzcxZTAyNWE2YzJjZWRjNzM3MjIwOWQ2MGQ2YTVhNjI1MjU5OTFmMzUwMDM5ZWZkOTFiYjliN2FjYzIxMzdjZTY5NWM5YjNhYWJhZTE4ZTM3OThjZmIxZWQ1NGRjMzVmYjcxNGU1NGFiNzdlNDcwYWQ5MWIwNmIzMTMzNjc1ZTQzNWNkM2JhMDUzZDAyYzkwODZhNzNmMjFlYThmZmM5NTZhMDI4MzMyMjljMGQxNDdiODM4ZjQxOGFjYTM2YjFkMzMzNjk3OGQ2MTA2OGVjM2FkOWU5YzUxOTgyMDIzOWRmNGZmZmQ5NTg0MWZhMDI4NTU1YzYxYWU0MDMxNmJhNDQ3OGIyOTE4NjZjOTQwNGRjMzE4M2VjZGZiMzVmYTk5ODQ1OWI3OWFlN2Q3Y2U4Njk2ZDU5M2E3ZTZjMWQwZjUzNzQxYjU3ZDM5YTUyNGM3YjMyZTE3ZTNmYTk5ZWEzN2IyMGRlNzlmZGNjMjBjZmVjMTY0NzY0YzJkY2MxOWNjZmRmZGU0N2Y0MGJiOTczMTI0OTU1NWNjMWRkMDNmYTk0ZWUzNWI5NDRmNTJhMjg0MjBlZjgwZjQzZjY0ZmUwZTIyOThlZWE2MjhkZGIxMmE3MjQxYmRjMzMwZWRkOWUxNjk5MmM1NmM0ZmZmMWQwNjc4YzNjZmJhY2JlOTg2NDAzNmQzOTE5MDRlMGFlNWQxYzY0OTM2NzE1ZDgzZmZhODg0ZWJjYjVkMmM2ODgxYjQxNzA0YTA0ODViOTliMmU0NGEyOTBlNDIxNjQ5NmU0ZGYwZjU2NWE2MTQ3MDM1NGNhY2I2NWI0MjA3MGViZWViZjEzY2U3YTFiMDhhY2NlOTM2In0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiIxMGE2NDgzY2FiNWRhYTY4OGQxYjk0Zjk0YmFkMTY3NiIsImNvbnRlbnQiOiIzYjMzZjE5Zjk1ZjVkMTZiNzZiNDY4MjczYjY4NzE1NmMyZTIxYzI1MzZjZDBmM2Q2MTE3NzcwY2FjZmU2OTJmZmM4NmUzZTk4NzY4ODcyMDA1ZDc2YzYyIn0sImp0aSI6IjlmMmM4Y2I2LTVkZDItNGZkZi04NWNiLWU1YWNkMWNjM2ZkMiIsImlhdCI6MTY5OTc1MzM0MCwiZXhwIjoxNjk5NzU2OTQwfQ.SHSJLYw6F3f963VTs9TlDHB4mMrH5AsHWVcjHnhPSyE',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImJiOWE1MjFkY2YzZjE4YzRmOTAwZGEzYjNiMTZmMjc2IiwiY29udGVudCI6IjhhMzViZTFjZmExYTExNjE1ODkxNjU2MjhmZTRjZmM3NWI1NDc0MjMwYjRmNWQ5YTFkNmI4NDkxMDFmNDE1ZWUwYjYwMjE0ZTQ5MjU2MjhlNjk4MTY1OTJhYWQyNDFlOTgzZjMzYmMyNmFkM2E5MTY0YWU2NDZhYmM4YzU3MmU1MzQxZmNiODQ2NmNkZDdiODZjOTBmMTIwZTllNzg4YjNlZDkyNzZhNGUzYmMxMzU1YmRkMjEyNDBhMWU4OWQ5NGRhYmVjNjU4MmNmNmU2MTE0ZWQ4MzI4MGExNjhlMDYzMjUyZDAwZmY1YTM1NjhiNDY0ZGMxZjgzMzA4NGY1MTFkNTA0ZTBkYTdmNmE0MjBjZTE2MzNmNWU5YWQ4MjIyMjQ4MWQzNDY5YzM2Y2Y5MTRkMThiZTNjYTc4ZDYzMzA1ZjFkZDNiMjgxNDI0MjdkZWQ1M2Q2NWI2MjJhNmRiYWFlZTIxZGM1MzkyNTQyMjkxZmZjYjdjMWE1ZTcyZmVmOTIyN2Y1YzdmOTE2MjQ3NDA1ZDM5ODk1MmU2ZWYzNWMyNGMyYTJhMDJhYTcyYWMyYWQzNzZmOWZiYzQxMzZkZGJiNjQwNzk2MDBlNzA2ZTVkODdkNmNmMmMyMmMwNDNhMzRjMGZlOWZmOThmNDRkZDkwMjgwOGQ4OTEwZDI2NWNlODAxOGNjODgwM2I1ZGNkNDYwZTkwODVlN2Q1ZDNkNjJmMWM5NTgwZjU1ZWIwNTgyNmU1ZTM0NzgyODhkNzQzZWQyMjY0MDgxNTY3MzIxZWI3MzdkOGVkNjE5MzEzYzIzYzdmNDM4NDAxNDI3ZDY5M2ZmMGZhZDM4ODQ3YzVmNTFlMjcwZGRmYzQ1MTVhNjY2MTRlYjRkIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJiYjlhNTIxZGNmM2YxOGM0ZjkwMGRhM2IzYjE2ZjI3NiIsImNvbnRlbnQiOiI5YTYxOGMyNmQxM2UzOTZiNDFiMjFlNDU5MWM3YjVjNzdhNzI1MTNlNzAwYjZhOWIxMjZjOTdjZTEyZGEyN2M1MGU0NDQxNGYyOTEzNWE4OTUzZGI0ZWFjIn0sImp0aSI6ImZhOGFjYmQ1LTA3OTYtNDAyZC1iZWUxLTMzYTA2OWM1YzA5MiIsImlhdCI6MTY5OTc2NjUwMCwiZXhwIjoxNjk5NzcwMTAwfQ.Fx_sniZkGPTgIHICnnugqAfVWLzE3QitdHnsgzTBAWQ',
     'Cookie': 'lang=en-US'
   }
 
@@ -36,3 +42,28 @@ def index():
 
 if __name__ == "main":
   app.run(debug=True, host="0.0.0.0", port=5001)
+
+@app.route('/add_todo', methods=['GET'])
+def add_todo():
+  print("todo function running")
+  return {"test": "yay!"}
+
+@app.route('/sendMessage', methods=['POST'])
+def sendMesage():
+    load_dotenv()
+    client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
+    sms = vonage.Sms(client)
+
+    responseData = sms.send_message(
+        {
+            "from": "13049150279",
+            "to": os.getenv('PHONE_NUMBER'),
+            "text": "You are using your phone while driving",
+        }
+    )
+
+    if responseData["messages"][0]["status"] == "0":
+        print("Message sent successfully.")
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    return

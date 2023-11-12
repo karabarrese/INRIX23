@@ -26,18 +26,68 @@ export default function App() {
   useEffect(() =>{
     AppState.addEventListener("change", _handleAppStateChange)
     return () => {
-      AppState.removeEventListern("change", _handleAppStateChange)
+      AppState.removeEventListener("change", _handleAppStateChange)
     }
   }, [])
   
   const _handleAppStateChange = (nextAppState) => {
     if(appState.current.match(/active/) && nextAppState === "inactive" ){
       console.log("User clicked off app")
+      // try {
+      //   fetch("http://172.31.181.212:5001/sendMessage", {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     }
+      //   });
+
+      // }
+      // catch(error){
+      //   console.error('Error: ', error)
+      // }
     }
     appState.current = nextAppState
     setAppStateVisible(appState.current)
     // console.log("AppState: ", appState.current)
   }
+
+    // communicate with flask backend
+    // useEffect(() =>{
+    //   return fetch(`http://172.31.181.212:5001/add`,{
+    //     'method':'POST',
+    //     headers : {
+    //       'Content-Type':'application/json'
+    //     },
+    //   })
+    //   .then(response => response.json())
+    //   .catch(error => console.log(error))
+    // }, [])
+    // onClick= () => {
+    //   const todo = { content }
+    //   const response = fetch("http://172.31.181.212:5001/add_todo", {
+    //   method: "POST",
+    //   headers: {
+    //   'Content-Type' : 'application/json'
+    //   },
+    //   body: JSON.stringify(todo)
+    //   })
+    // }
+    // function handlePostQuery(){
+    //   console.log("handle called")
+    //   var myParams = {
+    //     data: "query"
+    //   }
+    //   axios.post('http://172.31.181.212:5001/add_todo', myParams)
+    //     .then(function(response){
+    //       console.log(response);
+    //   //Perform action based on response
+    //   })
+    //   .catch(function(error){
+    //       console.log(error);
+    //   //Perform action based on error
+    //   });
+    // }
+
 
   // Return/display incident data
   return (
@@ -51,8 +101,11 @@ export default function App() {
           <Text>{data.incidents[0][0][1]}</Text>
           <Text>{data.incidents[0][1]}</Text>
         </View>
-        // data.message.map((message, i) => (
-        //   <Text key={i}>{message}</Text>
+        // data.message.map((data, i) => (
+        //   <View>
+        //     <Text>{data.incidents[i][0][0]}</Text>
+        //     <Text>{data.incidents[i][0][1]}</Text>
+        //   </View>
         // ))
       )}
       <StatusBar style="auto" />

@@ -1,17 +1,4 @@
 import { StatusBar } from 'expo-status-bar';
-<<<<<<< Updated upstream
-import { StyleSheet, Text, View } from 'react-native';
-//import {GetLocation} from 'react-native-get-location'
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-=======
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as Location from 'expo-location';
@@ -41,50 +28,46 @@ export default function App() {
   } else if (location) {
     text = JSON.stringify(location);
   }
- 
-  url = "https://maps.googleapis.com/maps/api/directions/json";
-  
-  class LatLng {
-    constructor(lat, lon) {
-      this.lat = lat;
-      this.lon = lon;
-    }
-  }
-
-  /*function makeLatLng(lat,lon)
-  {
-    return {
-      "latitude": lat,
-      "longitude": lon
-    };
-  }*/
-  //using this to make a LatLng
-  //const location1 = new LatLng(37,-121);
-  waypoint =
-  {
-    "via": boolean,
-    "vehicleStopover": boolean,
-    "sideOfRoad": boolean,
-  
-    // Union field location_type can be only one of the following:
-    "location": {
-      object (Location)
-    },
-    "placeId": string,
-    "address": string
-    // End of list of possible types for union field location_type.
-  }
-  params = 
-  {}
 
   return (
     <View style={styles.container}>
       <Text style={styles.paragraph}>{text}</Text>
     </View>
   );
-} 
->>>>>>> Stashed changes
 
+
+ /*
+  url = "https://maps.googleapis.com/maps/api/directions/json";
+  
+  const coordinates = {
+    longitude: 37,
+    latitude: -121
+  };
+  /*const location = {
+    latLng: coordinates
+  };*/
+
+  /*
+  const waypoint =
+  {
+    //"via": boolean,
+    //"vehicleStopover": boolean,
+    //"sideOfRoad": boolean,
+  
+    // Union field location_type can be only one of the following:
+    "location": {
+      coordinates
+    },
+    //"placeId": string,
+    //"address": string
+    // End of list of possible types for union field location_type.
+  }
+  const route_string = {
+
+  }
+*/
+}
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -92,20 +75,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-<<<<<<< Updated upstream
-});
-
-/*GetLocation.getCurrentPosition({
-  enableHighAccuracy: true,
-  timeout: 60000,
-})
-.then(location => {
-  console.log(location);
-})
-.catch(error => {
-  const { code, message } = error;
-  console.warn(code, message);
-})*/
-=======
-});
->>>>>>> Stashed changes
+});*/

@@ -88,8 +88,8 @@ export default function App() {
     _subscribe();
     return () => _unsubscribe();
   }, []);
-  console.log("y", Math.abs(y))
-  console.log("currentSegmentSpeed", (data.currentSegmentSpeed || 15))
+  // console.log("y", Math.abs(y))
+  // console.log("currentSegmentSpeed", (data.currentSegmentSpeed || 15))
   if(y * 8 > (data.currentSegmentSpeed || 15)){
     console.log("moving too fast")
     // try {

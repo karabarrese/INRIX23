@@ -20,7 +20,7 @@ def index():
 
   payload = {}
   headers = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6IjgxNGRkMzQ3M2ZkZGZkMjkzODE4NmMyMzZlOWEzY2Q1NWY5NTQzYjU3YmQ0ODRjNDk0YTAwYjBhNGEwM2RkZDI3MDVhMmI1YTc5ODkyMGE1ZDk0ZGFlYTM3MzQ5Y2E2ZDkyNzAzMzYwMGY2OTk5YTNmZmExOGVhYmQwYmY2ZDE2ODc1OWU4ODRjMzE4NmQ2MWY4ODA5ZDIyZTRmNTMyZGFiNTE5MTFlMDhiODQ1YjJhZGIyMzRhOWRlNjIzZmVmYzU4YTRjYWU1MGVmODUwYWFhYmQyNTg3M2JhYjRhZjkxYWZiNGY1NzgwYzU3MTQ1MDQ4ZmYyNTM2NDNiZmMxMzM2MzcyOWRiMTlhYzkwZTc2NWNjNzc3OWJkMDJkYzdhNzViMjFkNmE2NTk0N2VmMzBjNTFjNDk5MmE2MzI3ZjY1MTcyODk3NWJhMDlmZjcwODg2MThhMDc2NGRiNTkzM2RmMTAyYTczOThmNDIwMDk4NWI5NTI5NjQ5ODg3YjdiZGI2ZDNjNzMxMjU2OTI1NjcxNThiNTU3MzU5Yzk1OGQ0OTA1ZDQ3M2E1YjFiNzM4NGFhMGVhMGZjNGJkNmVlNWRhMDIzZmMwNWVkM2Q4Y2RiMDkyYmQzMTE5MDZhODEyOTM5N2U3YmYzNzMwMmJmMjBlOTgyZjRjNzM0MjZiMThlNDhkODAyZjdjMTA4ODM3OTMwNDE5ZTdkZTU5OGMyNjMxYzA2YjRhN2Q3Njk0ZGJhMDM0ZTk0ZTllODNmZGY4Mjg0NjcxNGQ3MTVjOWE2NjMxNjlkN2NkYzA0ZWU3YjU3NTY0M2U0Yzc0YjAxZjQ3MjMyODRiOTdjMTA2YzFiNmI3YTdjNmVhZTA2NzcxNTVlZTUifSwic2VjdXJpdHlUb2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6Ijk1NDRkZDc4MjdlZGE2MTMyZTAxNGIyMjQyODcxMGE4N2I5NzdkZjE1NzhiYmZiMjg1Yjc3MzdkNjAxY2Q1ZjM2MzYxMjIwODNiYTMzNWJhZDIxNmQ2OWQifSwianRpIjoiMzFhYTg3ZjEtMWY1Zi00ODIwLWJhZDgtMzRmNzhlMjdiOGJjIiwiaWF0IjoxNjk5Nzc0MjU3LCJleHAiOjE2OTk3Nzc4NTd9.Q1PX5x7sWJlJbzFVpjHcIySTvxoX0uh7IGtlgI18E94',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImVmNTc5YmVhNDg4YjNhNWJkNzJlZjllZTFlNGFlYjhkIiwiY29udGVudCI6ImZjNWQ2YjgwZDlkNGRkMzEyZWFhMmQxMDA2MTg0NTQ5MzUyZDRmNTYyODBhZmFhYmQzZjBkNjI2MjI0MDJlMTdkYjI1OGQyZTBhM2YwNWUyYTY0NDdhZGI0ZTg4ZjQ0N2M4NzcyMzU1ZjRkMjI2Yjc1YzNmZDY0OTM4YzdiMGMzZWZmYmY2NjE3NmRmMWUyM2VlZjhiYmRlYjQ4YjJkOGE0MDk3OWU5YzA0YTA4YzM5ZTIwNWVlNDc3NDJlZTc1Mjc4Yjc3MWM1MzM5MWU4YWRiOTNkNWEzYTNmMjA1YTQ4Y2Q4NzIyNzVmM2RlMDk4YjU4YmZmZjZkNGVkNDliZTM3ZmI5MjY1NjU1NWNmZDMwNTcwYjlhNjJhMTUxNGFkMTNiZmE4NjUzOGU0ZmE0MzViMTBiNjA1MWE0NTk1MTQ4MjE2MDkzZjQ1NjA5MTMzNzZlNDA1YzY2N2NkY2JmYTM2NjNlYTNkOTkyM2E4ZTlkM2IzYzA4MmE1MDExOTE1NGY5OTcxNDZhNmVmYjMyZjQ4ODBiYmI1ODA5YjY3OWVlNWVlZjRiMTcwNWExMzYzMTQzYTc2MjU2MTY4MmExZmFiNWVkYWViM2Q5NGI5OWY4OWY4YWVlNTExNjA5MzAxYjBhOTAwZWE4OTJmMDU1YzdjOTJlMmZlMmI5NzA2YmNhMzczNTU5MTc5YmJiMWEwN2NlMWY2NDllOGE0NWUwZjkwNGI1YWU2YzIxNjY5YjUxYmI0ZTRhNTJiMGU2NWMwNDlkYTdkMmU3MWQ1ODg0MTkyZGYzYmE5MTMxMGZhZTE2YmJiYzg3OTkzOWExYzc1YzlkYjNjOGYzYWFlYmU5NDE0MGU4MGQzMDVhY2YzZTdjZjA0Yzc3In0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJlZjU3OWJlYTQ4OGIzYTViZDcyZWY5ZWUxZTRhZWI4ZCIsImNvbnRlbnQiOiJmNjYwNTJiYThkZTA5NDZkMjdhZjEwMmYzNTE1NjAxYjNhMzA1NTUxMTQyMWU2YzllN2NhZTgyMTNlN2QxZjI5ZGY1MGJlNTQ1NTNkMDhjYWY3MWY3YmU1In0sImp0aSI6IjNkZGRhNjc2LTVlY2ItNDNmYi1hNzQyLTVlNmQ1YjhiZDAzZSIsImlhdCI6MTY5OTc4MDY0NCwiZXhwIjoxNjk5Nzg0MjQ0fQ.IFtNIe7Ovz5BmdDLFpFC23IbNg60mADXaFROeFYDmCg',
     'Cookie': 'lang=en-US'
   }
 
@@ -51,54 +51,54 @@ if __name__ == "main":
 
 @app.route('/sendMessage', methods=['POST'])
 def sendMesage():
-    load_dotenv()
-    client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
-    sms = vonage.Sms(client)
+  load_dotenv()
+  client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
+  sms = vonage.Sms(client)
 
-    responseData = sms.send_message(
-        {
-            "from": "13049150279",
-            "to": os.getenv('PHONE_NUMBER'),
-            "text": "You are using your phone while driving",
-        }
-    )
+  responseData = sms.send_message(
+      {
+          "from": "13049150279",
+          "to": os.getenv('PHONE_NUMBER'),
+          "text": "You are using your phone while driving",
+      }
+  )
 
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    return
+  if responseData["messages"][0]["status"] == "0":
+      print("Message sent successfully.")
+  else:
+      print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  return
 
 @app.route('/sendSpeedMessage', methods=['POST'])
 def sendSpeedMesage():
-    load_dotenv()
-    client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
-    sms = vonage.Sms(client)
+  load_dotenv()
+  client = vonage.Client(key=os.getenv('VONAGE_KEY'), secret=os.getenv('VONAGE_SECRET'))
+  sms = vonage.Sms(client)
 
-    responseData = sms.send_message(
-        {
-            "from": "13049150279",
-            "to": os.getenv('PHONE_NUMBER'),
-            "text": "You are driving too fast",
-        }
-    )
+  responseData = sms.send_message(
+      {
+          "from": "13049150279",
+          "to": os.getenv('PHONE_NUMBER'),
+          "text": "You are driving too fast",
+      }
+  )
 
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    return
+  if responseData["messages"][0]["status"] == "0":
+      print("Message sent successfully.")
+  else:
+      print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+  return
 
 
 @app.route('/segmentSpeed', methods=['GET'])
 def speedIndex():
   point = "37.757386%7C-122.490667"
   radius = "0.1"
-  # url = f"https://api.iq.inrix.com/v1/segments/speed?point={point}&radius={radius}"
-  url = "https://api.iq.inrix.com/v1/segments/speed?point=37.757386%7C-122.490667&radius=0.1"
+  url = f"https://api.iq.inrix.com/v1/segments/speed?point={point}&radius={radius}"
+  # url = "https://api.iq.inrix.com/v1/segments/speed?point=37.757386%7C-122.490667&radius=0.1"
   payload = {}
   headers = {
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6IjgxNGRkMzQ3M2ZkZGZkMjkzODE4NmMyMzZlOWEzY2Q1NWY5NTQzYjU3YmQ0ODRjNDk0YTAwYjBhNGEwM2RkZDI3MDVhMmI1YTc5ODkyMGE1ZDk0ZGFlYTM3MzQ5Y2E2ZDkyNzAzMzYwMGY2OTk5YTNmZmExOGVhYmQwYmY2ZDE2ODc1OWU4ODRjMzE4NmQ2MWY4ODA5ZDIyZTRmNTMyZGFiNTE5MTFlMDhiODQ1YjJhZGIyMzRhOWRlNjIzZmVmYzU4YTRjYWU1MGVmODUwYWFhYmQyNTg3M2JhYjRhZjkxYWZiNGY1NzgwYzU3MTQ1MDQ4ZmYyNTM2NDNiZmMxMzM2MzcyOWRiMTlhYzkwZTc2NWNjNzc3OWJkMDJkYzdhNzViMjFkNmE2NTk0N2VmMzBjNTFjNDk5MmE2MzI3ZjY1MTcyODk3NWJhMDlmZjcwODg2MThhMDc2NGRiNTkzM2RmMTAyYTczOThmNDIwMDk4NWI5NTI5NjQ5ODg3YjdiZGI2ZDNjNzMxMjU2OTI1NjcxNThiNTU3MzU5Yzk1OGQ0OTA1ZDQ3M2E1YjFiNzM4NGFhMGVhMGZjNGJkNmVlNWRhMDIzZmMwNWVkM2Q4Y2RiMDkyYmQzMTE5MDZhODEyOTM5N2U3YmYzNzMwMmJmMjBlOTgyZjRjNzM0MjZiMThlNDhkODAyZjdjMTA4ODM3OTMwNDE5ZTdkZTU5OGMyNjMxYzA2YjRhN2Q3Njk0ZGJhMDM0ZTk0ZTllODNmZGY4Mjg0NjcxNGQ3MTVjOWE2NjMxNjlkN2NkYzA0ZWU3YjU3NTY0M2U0Yzc0YjAxZjQ3MjMyODRiOTdjMTA2YzFiNmI3YTdjNmVhZTA2NzcxNTVlZTUifSwic2VjdXJpdHlUb2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6Ijk1NDRkZDc4MjdlZGE2MTMyZTAxNGIyMjQyODcxMGE4N2I5NzdkZjE1NzhiYmZiMjg1Yjc3MzdkNjAxY2Q1ZjM2MzYxMjIwODNiYTMzNWJhZDIxNmQ2OWQifSwianRpIjoiMzFhYTg3ZjEtMWY1Zi00ODIwLWJhZDgtMzRmNzhlMjdiOGJjIiwiaWF0IjoxNjk5Nzc0MjU3LCJleHAiOjE2OTk3Nzc4NTd9.Q1PX5x7sWJlJbzFVpjHcIySTvxoX0uh7IGtlgI18E94',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6IjZpeWIwZGYxdGoiLCJ0b2tlbiI6eyJpdiI6ImVmNTc5YmVhNDg4YjNhNWJkNzJlZjllZTFlNGFlYjhkIiwiY29udGVudCI6ImZjNWQ2YjgwZDlkNGRkMzEyZWFhMmQxMDA2MTg0NTQ5MzUyZDRmNTYyODBhZmFhYmQzZjBkNjI2MjI0MDJlMTdkYjI1OGQyZTBhM2YwNWUyYTY0NDdhZGI0ZTg4ZjQ0N2M4NzcyMzU1ZjRkMjI2Yjc1YzNmZDY0OTM4YzdiMGMzZWZmYmY2NjE3NmRmMWUyM2VlZjhiYmRlYjQ4YjJkOGE0MDk3OWU5YzA0YTA4YzM5ZTIwNWVlNDc3NDJlZTc1Mjc4Yjc3MWM1MzM5MWU4YWRiOTNkNWEzYTNmMjA1YTQ4Y2Q4NzIyNzVmM2RlMDk4YjU4YmZmZjZkNGVkNDliZTM3ZmI5MjY1NjU1NWNmZDMwNTcwYjlhNjJhMTUxNGFkMTNiZmE4NjUzOGU0ZmE0MzViMTBiNjA1MWE0NTk1MTQ4MjE2MDkzZjQ1NjA5MTMzNzZlNDA1YzY2N2NkY2JmYTM2NjNlYTNkOTkyM2E4ZTlkM2IzYzA4MmE1MDExOTE1NGY5OTcxNDZhNmVmYjMyZjQ4ODBiYmI1ODA5YjY3OWVlNWVlZjRiMTcwNWExMzYzMTQzYTc2MjU2MTY4MmExZmFiNWVkYWViM2Q5NGI5OWY4OWY4YWVlNTExNjA5MzAxYjBhOTAwZWE4OTJmMDU1YzdjOTJlMmZlMmI5NzA2YmNhMzczNTU5MTc5YmJiMWEwN2NlMWY2NDllOGE0NWUwZjkwNGI1YWU2YzIxNjY5YjUxYmI0ZTRhNTJiMGU2NWMwNDlkYTdkMmU3MWQ1ODg0MTkyZGYzYmE5MTMxMGZhZTE2YmJiYzg3OTkzOWExYzc1YzlkYjNjOGYzYWFlYmU5NDE0MGU4MGQzMDVhY2YzZTdjZjA0Yzc3In0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJlZjU3OWJlYTQ4OGIzYTViZDcyZWY5ZWUxZTRhZWI4ZCIsImNvbnRlbnQiOiJmNjYwNTJiYThkZTA5NDZkMjdhZjEwMmYzNTE1NjAxYjNhMzA1NTUxMTQyMWU2YzllN2NhZTgyMTNlN2QxZjI5ZGY1MGJlNTQ1NTNkMDhjYWY3MWY3YmU1In0sImp0aSI6IjNkZGRhNjc2LTVlY2ItNDNmYi1hNzQyLTVlNmQ1YjhiZDAzZSIsImlhdCI6MTY5OTc4MDY0NCwiZXhwIjoxNjk5Nzg0MjQ0fQ.IFtNIe7Ovz5BmdDLFpFC23IbNg60mADXaFROeFYDmCg',
     'Cookie': 'lang=en-US'
   }
 

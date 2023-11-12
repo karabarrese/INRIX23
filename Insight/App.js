@@ -53,112 +53,58 @@ export default function App() {
     // console.log("AppState: ", appState.current)
   }
 
-    // communicate with flask backend
-    // useEffect(() =>{
-    //   return fetch(`http://172.31.181.212:5001/add`,{
-    //     'method':'POST',
-    //     headers : {
-    //       'Content-Type':'application/json'
-    //     },
-    //   })
-    //   .then(response => response.json())
-    //   .catch(error => console.log(error))
-    // }, [])
-    // onClick= () => {
-    //   const todo = { content }
-    //   const response = fetch("http://172.31.181.212:5001/add_todo", {
-    //   method: "POST",
-    //   headers: {
-    //   'Content-Type' : 'application/json'
-    //   },
-    //   body: JSON.stringify(todo)
-    //   })
-    // }
-    // function handlePostQuery(){
-    //   console.log("handle called")
-    //   var myParams = {
-    //     data: "query"
-    //   }
-    //   axios.post('http://172.31.181.212:5001/add_todo', myParams)
-    //     .then(function(response){
-    //       console.log(response);
-    //   //Perform action based on response
-    //   })
-    //   .catch(function(error){
-    //       console.log(error);
-    //   //Perform action based on error
-    //   });
-    // }
-
-  // get user speed
-  // const [location, setLocation] = useState(null);
-  // const [errorMsg, setErrorMsg] = useState(null);
-
-  // useEffect(() => {
-  //   (async () => {
-      
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
-
-  // let text = 'Waiting..';
-  // if (errorMsg) {
-  //   text = errorMsg;
-  // } else if (location) {
-  //   text = JSON.stringify(location["coords"]["speed"]);
-  // }
-  // console.log(text)
-
-  // useEffect(() => {
+  // Get segment speed and see if user is driving too fast
+  useEffect(() => {
+    fetch("http://172.31.181.212:5001/segmentSpeed").then(
+      res => res.json()
+    ).then(
+      data => {
+        setData(data)
+        // console.log(data.currentSegmentSpeed)
+      }
+    )
+  }, [])
   prevAcceleration=0
   curAcceleration=0
-    const [{ x, y, z }, setData2] = useState({
-      x: 0,
-      y: 0,
-      z: 0,
-    });
-    const [subscription, setSubscription] = useState(null);
-  
-    Accelerometer.setUpdateInterval(1000);
-  
-    const _subscribe = () => {
-      setSubscription(Accelerometer.addListener(setData2));
-    };
-  
-    const _unsubscribe = () => {
-      subscription && subscription.remove();
-      setSubscription(null);
-    };
-  
-    useEffect(() => {
-      _subscribe();
-      return () => _unsubscribe();
-    }, []);
-    // console.log("x", x)
-    // console.log("y", y)
-    console.log("y", Math.abs(y))
-    if(y * 20 > 20){
-      console.log("moving too fast")
-      // try {
-      //   fetch("http://172.31.181.212:5001/sendSpeedMessage", {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     }
-      //   });
+  const [{ x, y, z }, setData2] = useState({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [subscription, setSubscription] = useState(null);
 
-      // }
-      // catch(error){
-      //   console.error('Error: ', error)
-      // }
-    }
+  Accelerometer.setUpdateInterval(1000);
+
+  const _subscribe = () => {
+    setSubscription(Accelerometer.addListener(setData2));
+  };
+
+  const _unsubscribe = () => {
+    subscription && subscription.remove();
+    setSubscription(null);
+  };
+  
+  useEffect(() => {
+    _subscribe();
+    return () => _unsubscribe();
+  }, []);
+  console.log("y", Math.abs(y))
+  console.log("currentSegmentSpeed", (data.currentSegmentSpeed || 15))
+  if(y * 8 > (data.currentSegmentSpeed || 15)){
+    console.log("moving too fast")
+    // try {
+    //   fetch("http://172.31.181.212:5001/sendSpeedMessage", {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     }
+    //   });
+
+    // }
+    // catch(error){
+    //   console.error('Error: ', error)
+    // }
+  }
     // prevAcceleration = curAcceleration;
     // curAcceleration = z;
     // velocity = (curAcceleration + prevAcceleration)/2*1 //meters per second

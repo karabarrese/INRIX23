@@ -143,13 +143,21 @@ export default function App() {
     }, []);
     // console.log("x", x)
     // console.log("y", y)
-    console.log("z", z)
-    prevAcceleration = curAcceleration;
-    curAcceleration = z;
-    velocity = (curAcceleration - prevAcceleration)*1
-    if(velocity>0.75){
-      console.log("moving too fast in z")
-    }  
+    console.log("y", Math.abs(y))
+    if(y * 20 > 20){
+      console.log("moving too fast")
+    }
+    // prevAcceleration = curAcceleration;
+    // curAcceleration = z;
+    // velocity = (curAcceleration + prevAcceleration)/2*1 //meters per second
+    // milesPerMeter = 0.000621371
+    // secondsPerHour = 3600
+    // velocityMPH = velocity * milesPerMeter * secondsPerHour * 20
+    // console.log(velocityMPH)
+    // mph
+    // if(velocity>0.75){
+    //   console.log("moving too fast in z")
+    // }  
   // }, []);
 
   // Return/display incident data

@@ -17,7 +17,7 @@ class DrivingFact extends React.Component {
 
         console.log("Want to go to drive page");
         //this.props.navigation.navigate("SignUp");
-        // this.props.navigation.navigate("Contacts");
+        this.props.navigation.navigate("LocationScreen");
         return;
     };
     wandleSubmit = async () => {

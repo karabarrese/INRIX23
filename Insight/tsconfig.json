@@ -19,7 +19,7 @@
     "*.ts",
     "*.tsx",
     "components/firebase.d.ts"
-, "SignupScreen.js", "ContactsScreen.js"  ],
+, "SignupScreen.js", "ContactsScreen.js", "LocationScreen.js", "LocationScreen.js"  ],
   "exclude": [
     "node_modules"
   ],

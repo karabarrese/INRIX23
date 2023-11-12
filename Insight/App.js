@@ -27,7 +27,8 @@ export default function App() {
         <Text>Loading...</Text>
       ) : (
         <View>
-          <Text>{data.incidents[0][0]}</Text>
+          <Text>{data.incidents[0][0][0]}</Text>
+          <Text>{data.incidents[0][0][1]}</Text>
           <Text>{data.incidents[0][1]}</Text>
         </View>
         // data.message.map((message, i) => (

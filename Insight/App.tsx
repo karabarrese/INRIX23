@@ -1,7 +1,8 @@
 import SignupScreen from './SignupScreen';
 import docId from './SignupScreen';
 import ContactsScreen from './ContactsScreen';
-
+import HomeScreen from './HomeScreen';
+import DrivingFact from './DrivingFact';
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,14 +24,22 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='SignUp'>
+        <Stack.Navigator initialRouteName='HomeScreen'>
           <Stack.Screen
             name="SignUp"
             component={SignupScreen} 
           />
           <Stack.Screen
-            name="Contacts"
+            name="ContactsScreen"
             component={ContactsScreen} 
+          />
+          <Stack.Screen
+            name="HomeScreen"
+            component={HomeScreen} 
+          />
+          <Stack.Screen
+            name="DrivingFact"
+            component={DrivingFact} 
           />
         </Stack.Navigator>
       </NavigationContainer>

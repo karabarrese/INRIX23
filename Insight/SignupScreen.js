@@ -1,7 +1,7 @@
 // SignupScreen.tsx
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from 'react-native';
 import { add_user_details } from './addDataToDatabase'; // Adjust the path accordingly
 import { setDocID } from './DocIdGetterSetter'
 
@@ -28,7 +28,7 @@ class SignupScreen extends React.Component {
     // getDocID();
 
     console.log("Function returned a");
-    this.props.navigation.navigate("Contacts");
+    this.props.navigation.navigate("DrivingFact");
     // this.props.navigation.navigate("Contacts");
   };
 

@@ -146,6 +146,18 @@ export default function App() {
     console.log("y", Math.abs(y))
     if(y * 20 > 20){
       console.log("moving too fast")
+      // try {
+      //   fetch("http://172.31.181.212:5001/sendSpeedMessage", {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     }
+      //   });
+
+      // }
+      // catch(error){
+      //   console.error('Error: ', error)
+      // }
     }
     // prevAcceleration = curAcceleration;
     // curAcceleration = z;

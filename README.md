@@ -1,4 +1,4 @@
-# INRIX 2023 - Insight
+# INRIX HACK 2023 - Insight
 
 Submitted by: **Maddie Follosco, Tiffany Nguyen, Kara Barrese, Lindsey Leong, Irene Chang, and Pragnya Vijayan**
 
